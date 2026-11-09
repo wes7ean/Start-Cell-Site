@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Start Cell</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Rajdhani:wght@500;600&display=swap">
+<style>
+:root{--bg:#000;--surface:#0B0F12;--ink:#F2F6F8;--muted:#8A98A3;--neon:#00E5FF;--neon2:#7B5CFF;--line:#1B2A33;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Rajdhani",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;font-size:1.05rem;line-height:1.45;
+background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:44px 44px;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,229,255,.16),transparent 60%),radial-gradient(ellipse at 50% 100%,#000 10%,transparent 70%);pointer-events:none;z-index:0}
+body>*{position:relative;z-index:1}
+h1,h2,h3,.price,.btn-font{font-family:"Orbitron",system-ui,sans-serif}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid var(--neon);outline-offset:3px}
+.top{display:flex;justify-content:flex-end;padding:12px 20px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:linear-gradient(#000 40%,transparent)}
+.cart-btn{background:transparent;color:var(--neon);border:1px solid var(--neon);border-radius:4px;padding:8px 16px;font-family:"Orbitron",sans-serif;font-size:.8rem;box-shadow:0 0 14px rgba(0,229,255,.35),inset 0 0 10px rgba(0,229,255,.12)}
+.hero{max-width:900px;margin:0 auto;padding:0 20px 24px;text-align:center}
+.logo{width:min(210px,56vw);height:auto;display:block;margin:0 auto;mix-blend-mode:lighten;filter:drop-shadow(0 0 18px rgba(0,229,255,.4));animation:rise 1s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(14px) scale(.97);filter:drop-shadow(0 0 0 rgba(0,229,255,0)) blur(6px)}}
+.contact{margin:-14px auto 0;display:flex;flex-wrap:wrap;justify-content:center;gap:12px 28px}
+.contact a{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-size:1.2rem;font-weight:600}
+.contact a:hover{color:var(--neon)}
+.contact svg{width:28px;height:28px;color:var(--neon);filter:drop-shadow(0 0 6px rgba(0,229,255,.6))}
+.scan{height:1px;max-width:320px;margin:14px auto 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent)}
+
+.drop{height:116vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:grid;place-items:center;--gc:255,61,110;--g:.15;--s:.95;--y:-12;--f:0;--m:0;--t:0;--k1:0;--k2:0;--k3:0}
+.glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 52%,rgba(var(--gc),calc(var(--g)*.5)),rgba(0,229,255,calc(var(--g)*.32)) 32%,transparent 66%)}
+.phone{position:relative;height:58vh;height:58svh;max-width:92vw;width:auto;object-fit:contain;transform:translateY(calc(var(--y)*1svh)) scale(var(--s));filter:drop-shadow(0 0 calc(var(--g)*50px) rgba(var(--gc),calc(var(--g)*.7)));will-change:transform}
+.fade{position:absolute;left:0;right:0;bottom:0;height:55%;background:linear-gradient(to top,rgba(0,0,0,var(--f)) 0%,rgba(0,0,0,calc(var(--f)*.7)) 35%,transparent 100%);pointer-events:none}
+.headline{z-index:2;position:absolute;top:calc(56px + env(safe-area-inset-top,0px));left:0;right:0;height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;text-align:center;padding:0 20px;opacity:var(--t)}
+.headline h2{margin:0;font-size:clamp(1.3rem,5.4vw,2.2rem);font-weight:800;letter-spacing:-.01em}
+.headline p{margin:6px 0 0;color:var(--neon);font-family:"Orbitron",sans-serif;font-size:.8rem;letter-spacing:.12em}
+.specs{z-index:2;position:absolute;-webkit-mask-image:linear-gradient(to top,#000 calc(var(--m)*140% - 40%),transparent calc(var(--m)*140%));mask-image:linear-gradient(to top,#000 calc(var(--m)*140% - 40%),transparent calc(var(--m)*140%));left:0;right:0;bottom:calc(.68svh + 1.5px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;justify-content:center;padding:0 14px;flex-wrap:wrap}
+.spec{flex:1 1 150px;max-width:230px;background:rgba(0,0,0,.72);border:1px solid var(--neon);border-radius:6px;padding:10px 12px;backdrop-filter:blur(6px);box-shadow:0 0 16px rgba(0,229,255,.22)}
+.spec b{display:block;font-family:"Orbitron",sans-serif;font-size:.95rem;color:var(--neon)}
+.spec span{font-size:.95rem;color:var(--ink)}
+.spec:nth-child(1){opacity:var(--k1);transform:translateX(calc((1 - var(--k1))*100vw))}
+.spec:nth-child(2){opacity:var(--k2);transform:translateX(calc((1 - var(--k2))*100vw))}
+.spec:nth-child(3){opacity:var(--k3);transform:translateX(calc((1 - var(--k3))*100vw))}
+.drop-cta{align-self:center;display:inline-block;margin-top:12px;color:#000;background:var(--neon);text-decoration:none;font-weight:600;padding:9px 18px;border-radius:4px;box-shadow:0 0 18px rgba(0,229,255,.5);letter-spacing:.04em}
+.price-tag{font-family:"Orbitron",sans-serif;font-weight:800;font-size:1.25rem;margin-top:8px;color:var(--ink);text-shadow:0 0 14px rgba(0,229,255,.55)}
+.price-tag.ask{font-size:.9rem;font-weight:500;color:var(--neon);letter-spacing:.06em}
+.stage.watch{--gc:255,190,140}
+.phone.wimg{height:42svh}
+.stage.mac{--gc:255,138,150}
+.phone.macimg{height:auto;width:80vw;max-width:560px}
+@media (max-width:480px){.specs{flex-wrap:nowrap;gap:6px;padding:0 10px}.spec{flex:1 1 0;min-width:0;max-width:none;padding:6px 8px}.spec b{font-size:.7rem}.spec span{font-size:.72rem;line-height:1.2}.phone{height:50svh}}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin:4px -20px 0;padding:0 16px}
+.tabs::-webkit-scrollbar{display:none}
+@media (min-width:700px){.tabs{justify-content:center}}
+.tab{flex:none;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font-family:"Orbitron",sans-serif;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:12px}
+.tab[aria-selected="true"]{color:var(--neon);border-bottom-color:var(--neon);text-shadow:0 0 12px rgba(0,229,255,.6)}
+.panel[hidden]{display:none}
+.info{max-width:700px;margin:0 auto;padding:30px 20px 80px;text-align:center}
+.info h2{font-size:1.1rem;margin:0 0 16px;letter-spacing:.08em;text-transform:uppercase}
+.lead{font-size:1.3rem;line-height:1.5;margin:0 auto;max-width:34ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:22px}
+.chips span{border:1px solid var(--neon);color:var(--neon);border-radius:4px;padding:6px 12px;font-family:"Orbitron",sans-serif;font-size:.7rem;letter-spacing:.08em}
+.social{display:flex;flex-direction:column;gap:12px;max-width:380px;margin:0 auto}
+.social a{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line);border-radius:6px;background:rgba(11,15,18,.92);color:var(--ink);text-decoration:none;font-size:1.2rem;font-weight:600;text-align:left}
+.social a:hover{border-color:var(--neon)}
+.social svg{width:30px;height:30px;color:var(--neon);flex:none;filter:drop-shadow(0 0 6px rgba(0,229,255,.6))}
+.fb-list{display:grid;gap:14px;text-align:left}
+.fb{position:relative;display:flex;gap:14px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:6px;background:rgba(11,15,18,.92)}
+.fb img{width:56px;height:56px;border-radius:50%;border:1px solid var(--neon);flex:none}
+.fb b{display:block;font-family:"Orbitron",sans-serif;font-size:.85rem;font-weight:500}
+.stars{color:#F2C230;letter-spacing:2px;font-size:1rem}
+.fb p{margin:4px 0 0}
+.ex{position:absolute;top:8px;right:10px;font-size:.55rem;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:1px 6px;font-family:"Orbitron",sans-serif}
+.promo-sub{color:var(--muted);font-family:"Orbitron",sans-serif;letter-spacing:.2em;font-size:.8rem;margin-bottom:6px}
+.promo-big{font-family:"Orbitron",sans-serif;font-weight:800;font-size:clamp(3rem,16vw,5.5rem);color:var(--neon);text-shadow:0 0 28px rgba(0,229,255,.6);line-height:1;margin-bottom:20px}
+.catalog{max-width:760px;text-align:left}
+.catalog>div>h2{text-align:center}
+.cats,.plist{display:grid;gap:12px}
+.cat{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:6px;background:rgba(11,15,18,.92);color:var(--ink);cursor:pointer;font:inherit}
+.cat:hover{border-color:var(--neon)}
+.cat img{width:64px;height:64px;object-fit:contain;flex:none}
+.cat .nm{font-family:"Orbitron",sans-serif;font-size:1rem;display:block}
+.cat .sub{color:var(--muted);font-size:.95rem}
+.cat .go{margin-left:auto;color:var(--neon);font-size:1.5rem}
+.back{background:none;border:0;color:var(--neon);font-family:"Orbitron",sans-serif;font-size:.72rem;letter-spacing:.08em;padding:4px 0;margin-bottom:10px;cursor:pointer}
+.pd-hero{text-align:center}
+.pd-hero img{max-width:min(340px,82%);max-height:46svh;object-fit:contain;filter:drop-shadow(0 0 28px rgba(0,229,255,.25))}
+.pd-hero h2{margin:12px 0 4px;font-size:1.4rem;text-transform:none;letter-spacing:0}
+.pd-price{font-family:"Orbitron",sans-serif;font-weight:800;font-size:1.4rem;color:var(--neon);text-shadow:0 0 18px rgba(0,229,255,.5)}
+.pd-price.ask{font-size:1rem;font-weight:500}
+.pd-cta{display:inline-block;margin-top:14px;background:var(--neon);color:#000;text-decoration:none;border-radius:4px;padding:12px 22px;font-weight:600;letter-spacing:.04em;box-shadow:0 0 18px rgba(0,229,255,.5)}
+.pd-sec{margin-top:28px}
+.pd-sec h3{font-family:"Orbitron",sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--neon);margin:0 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.pd-desc{font-size:1.1rem;margin:0}
+.rows>div{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--line)}
+.rows>div span:first-child{color:var(--muted);flex:none}
+.rows>div span:last-child{text-align:right}
+.chipset{display:flex;flex-wrap:wrap;gap:8px}
+.chipset span{border:1px solid var(--neon);color:var(--neon);border-radius:4px;padding:6px 12px;font-family:"Orbitron",sans-serif;font-size:.75rem}
+.note{color:var(--muted);font-size:.95rem;margin:8px 0 0}
+.filters{max-width:900px;margin:0 auto;padding:18px 20px 8px;display:flex;gap:8px;overflow-x:auto}
+.filters button{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:4px;padding:6px 14px;white-space:nowrap;font-weight:600}
+.filters button[aria-pressed="true"]{color:#000;background:var(--neon);border-color:var(--neon);box-shadow:0 0 14px rgba(0,229,255,.5)}
+.grid{max-width:900px;margin:0 auto;padding:8px 20px 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.card{background:rgba(11,15,18,.92);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%)}
+.card:hover{border-color:var(--neon)}
+.thumb{aspect-ratio:4/3;display:grid;place-items:center;font-family:"Orbitron",sans-serif;font-size:2.6rem;font-weight:800;color:var(--neon);background:radial-gradient(circle at 50% 40%,rgba(0,229,255,.18),transparent 65%),#05090B;border-bottom:1px solid var(--line);text-shadow:0 0 18px var(--neon)}
+.info{padding:14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.info h3{margin:0;font-size:.95rem;font-weight:500}
+.info p{margin:0;color:var(--muted);flex:1}
+.price{font-weight:800;font-size:1.1rem;margin-top:8px;color:var(--neon)}
+.add{margin-top:8px;border:1px solid var(--neon);border-radius:4px;padding:10px;background:rgba(0,229,255,.08);color:var(--neon);font-weight:600;letter-spacing:.04em}
+.add:hover{background:var(--neon);color:#000}
+.add:active{transform:scale(.97)}
+aside{position:fixed;inset:0 0 0 auto;width:min(380px,100%);background:#06090B;border-left:1px solid var(--neon);box-shadow:-10px 0 40px rgba(0,229,255,.12);transform:translateX(100%);transition:transform .25s;z-index:10;display:flex;flex-direction:column;padding:calc(16px + env(safe-area-inset-top,0px)) 18px calc(16px + env(safe-area-inset-bottom,0px))}
+aside.open{transform:none}
+@media (prefers-reduced-motion:reduce){aside{transition:none}.logo{animation:none}}
+aside h2{margin:0 0 12px;font-size:1.1rem}
+#items{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:28px;height:28px;border-radius:4px;border:1px solid var(--neon);background:none;color:var(--neon)}
+.empty{color:var(--muted)}
+.total{display:flex;justify-content:space-between;font-family:"Orbitron",sans-serif;font-size:1rem;margin:14px 0}
+.checkout{display:block;text-align:center;text-decoration:none;background:var(--neon);color:#000;border-radius:4px;padding:12px;font-weight:600;letter-spacing:.04em;box-shadow:0 0 18px rgba(0,229,255,.5)}
+.checkout[aria-disabled="true"]{opacity:.35;pointer-events:none;box-shadow:none}
+.close{align-self:flex-end;border:0;background:none;color:var(--ink);font-size:1.6rem;line-height:1}
+</style>
+</head>
+<body>
+<div class="top"><button class="cart-btn" id="open-cart">CARRINHO (<span id="count">0</span>)</button></div>
+<header class="hero">
+<img class="logo" alt="Start Cell, desde 2021" src="logo.jpg">
+<div class="scan"></div>
+<nav class="tabs" role="tablist" aria-label="Seções da loja">
+<button class="tab" role="tab" data-t="home">Página inicial</button>
+<button class="tab" role="tab" data-t="sobre">Sobre nós</button>
+<button class="tab" role="tab" data-t="produtos">Produtos</button>
+<button class="tab" role="tab" data-t="redes">Redes sociais</button>
+<button class="tab" role="tab" data-t="feedbacks">Feedbacks</button>
+<button class="tab" role="tab" data-t="promos">Próximas promoções</button>
+</nav>
+</header>
+<div class="panel" id="p-home">
+<section class="drop" id="drop" aria-label="iPhone 18 Pro Max disponível">
+<div class="stage" id="stage">
+<div class="glow"></div>
+<div class="headline"><h2>iPhone 18 Pro Max</h2><p>JÁ DISPONÍVEL NA START CELL</p><div class="price-tag ask">Consulte o preço</div><a class="drop-cta" id="drop-cta" href="#" target="_blank" rel="noopener">CONSULTAR PELO WHATSAPP</a></div>
+<img class="phone" alt="iPhone 18 Pro Max na cor Burgundy, frente e traseira" src="iphone-18-pro-max.png">
+<div class="fade"></div>
+<div class="specs">
+<div class="spec"><b>Chip A20 Pro</b><span>CPU de 6 núcleos</span></div>
+<div class="spec"><b>Câmera 48 MP</b><span>3 câmeras de 48 MP</span></div>
+<div class="spec"><b>Tela 6,9″</b><span>OLED de até 120 Hz</span></div>
+</div>
+</div>
+</section>
+<section class="drop" id="drop2" aria-label="MacBook 12 polegadas 2017 disponível">
+<div class="stage mac" id="stage2">
+<div class="glow"></div>
+<div class="headline"><h2>MacBook 12″ (2017)</h2><p>DISPONÍVEL NA START CELL</p><div class="price-tag">R$ 2.100</div><a class="drop-cta" id="drop-cta2" href="#" target="_blank" rel="noopener">CONSULTAR PELO WHATSAPP</a></div>
+<img class="phone macimg" alt="MacBook Retina de 12 polegadas, 2017, ouro rosa" src="macbook-12-2017.png">
+<div class="fade"></div>
+<div class="specs">
+<div class="spec"><b>Intel Core m3</b><span>Dual-core 1,2 GHz</span></div>
+<div class="spec"><b>Tela Retina 12″</b><span>2304×1440 pixels</span></div>
+<div class="spec"><b>Sem ventoinha</b><span>Silencioso e ultrafino</span></div>
+</div>
+</div>
+</section>
+<section class="drop" id="drop3" aria-label="Apple Watch Série 5 disponível">
+<div class="stage watch" id="stage3">
+<div class="glow"></div>
+<div class="headline"><h2>Apple Watch Série 5 · 40 mm</h2><p>GPS · DISPONÍVEL NA START CELL</p><div class="price-tag">R$ 800</div><a class="drop-cta" id="drop-cta3" href="#" target="_blank" rel="noopener">CONSULTAR PELO WHATSAPP</a></div>
+<img class="phone wimg" alt="Apple Watch Série 5 dourado com pulseira esportiva rosa-areia" src="apple-watch-series-5.png">
+<div class="fade"></div>
+<div class="specs">
+<div class="spec"><b>Chip S5</b><span>Dual-core de 64 bits</span></div>
+<div class="spec"><b>Tela Always-On</b><span>Retina LTPO OLED</span></div>
+<div class="spec"><b>Resistente à água</b><span>Até 50 metros</span></div>
+</div>
+</div>
+</section>
+<nav class="filters" id="filters" aria-label="Categorias"></nav>
+<main class="grid" id="grid"></main>
+</div>
+<section class="panel info catalog" id="p-produtos" hidden>
+<div id="pv-cats"><h2>Produtos</h2><div class="cats" id="cats"></div></div>
+<div id="pv-list" hidden><button class="back" id="back-cats">← CATEGORIAS</button><h2 id="list-title"></h2><div class="plist" id="plist"></div></div>
+<div id="pv-detail" hidden></div>
+</section>
+<section class="panel info" id="p-sobre" hidden>
+<h2>Sobre nós</h2>
+<p class="lead">Somos uma loja que trabalha desde 2021 e já vendeu centenas de aparelhos.</p>
+<div class="chips"><span>DESDE 2021</span><span>CENTENAS DE APARELHOS VENDIDOS</span></div>
+</section>
+<section class="panel info" id="p-redes" hidden>
+<h2>Redes sociais</h2>
+<div class="social">
+<a href="https://instagram.com/startcell11" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6"/></svg><span>@startcell11</span></a>
+<a href="https://wa.me/5511932207774" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.7A8.5 8.5 0 1 1 8 19.6L3 21z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1.2-1.5-2-1-1 .7c-1-.4-2-1.4-2.4-2.4l.7-1-1-2L9 8.5z"/></svg><span>(11) 93220-7774</span></a>
+</div>
+</section>
+<section class="panel info" id="p-feedbacks" hidden>
+<h2>Feedbacks</h2>
+<div class="fb-list" id="fb-list"></div>
+</section>
+<section class="panel info" id="p-promos" hidden>
+<h2>Próximas promoções</h2>
+<div class="promo-sub">DEZEMBRO</div>
+<div class="promo-big">30% OFF</div>
+<p class="lead">Em dezembro vamos postar aparelhos e MacBooks com 30% OFF.</p>
+</section>
+
+<aside id="cart" aria-label="Carrinho">
+<button class="close" id="close-cart" aria-label="Fechar carrinho">×</button>
+<h2>SEU CARRINHO</h2>
+<div id="items"></div>
+<div class="total"><span>TOTAL</span><span id="total">R$ 0,00</span></div>
+<a class="checkout" id="checkout" href="#" target="_blank" rel="noopener" aria-disabled="true">FINALIZAR PELO WHATSAPP</a>
+</aside>
+<script>
+/* EDITE AQUI: WhatsApp (DDI+DDD, só números) e produtos */
+var SHOP="Start Cell", WHATSAPP="5511932207774";
+var PRODUCTS=[
+{id:1,name:"Capa Premium",cat:"Acessórios",price:49.9,desc:"Descrição curta do produto."},
+{id:2,name:"Película 3D",cat:"Acessórios",price:29.9,desc:"Descrição curta do produto."},
+{id:3,name:"Carregador Rápido",cat:"Carregadores",price:89.9,desc:"Descrição curta do produto."},
+{id:4,name:"Cabo USB-C",cat:"Carregadores",price:39.9,desc:"Descrição curta do produto."},
+{id:5,name:"Fone Bluetooth",cat:"Áudio",price:129.9,desc:"Descrição curta do produto."},
+{id:6,name:"Smartphone",cat:"Aparelhos",price:1299,desc:"Descrição curta do produto."}
+];
+var cart={}, filter="Todos";
+var brl=function(v){return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})};
+var $=function(i){return document.getElementById(i)};
+document.title=SHOP;
+function renderFilters(){
+  var cats=["Todos"].concat(PRODUCTS.map(function(p){return p.cat}).filter(function(c,i,a){return a.indexOf(c)===i}));
+  $("filters").innerHTML="";
+  cats.forEach(function(c){var b=document.createElement("button");b.textContent=c;b.setAttribute("aria-pressed",c===filter);b.onclick=function(){filter=c;renderFilters();renderGrid()};$("filters").appendChild(b)});
+}
+function renderGrid(){
+  $("grid").innerHTML="";
+  PRODUCTS.filter(function(p){return filter==="Todos"||p.cat===filter}).forEach(function(p){
+    var d=document.createElement("article");d.className="card";
+    d.innerHTML='<div class="thumb">'+p.name.charAt(0)+'</div><div class="info"><h3></h3><p></p><div class="price">'+brl(p.price)+'</div><button class="add">ADICIONAR</button></div>';
+    d.querySelector("h3").textContent=p.name;d.querySelector("p").textContent=p.desc;
+    d.querySelector(".add").onclick=function(){cart[p.id]=(cart[p.id]||0)+1;renderCart()};
+    $("grid").appendChild(d);
+  });
+}
+function renderCart(){
+  var n=0,t=0,lines=[];$("items").innerHTML="";
+  PRODUCTS.forEach(function(p){var q=cart[p.id];if(!q)return;n+=q;t+=q*p.price;lines.push(q+"x "+p.name+" - "+brl(q*p.price));
+    var r=document.createElement("div");r.className="row";
+    r.innerHTML='<div><strong></strong><div>'+brl(p.price)+'</div></div><div class="qty"><button aria-label="Diminuir">−</button><span>'+q+'</span><button aria-label="Aumentar">+</button></div>';
+    r.querySelector("strong").textContent=p.name;
+    var b=r.querySelectorAll("button");
+    b[0].onclick=function(){cart[p.id]--;if(!cart[p.id])delete cart[p.id];renderCart()};
+    b[1].onclick=function(){cart[p.id]++;renderCart()};
+    $("items").appendChild(r)});
+  if(!n)$("items").innerHTML='<p class="empty">Seu carrinho está vazio. Adicione um produto para começar.</p>';
+  $("count").textContent=n;$("total").textContent=brl(t);
+  var a=$("checkout");a.setAttribute("aria-disabled",n?"false":"true");
+  a.href=n?"https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent("Olá! Gostaria de fazer este pedido:\n"+lines.join("\n")+"\nTotal: "+brl(t)):"#";
+}
+$("open-cart").onclick=function(){$("cart").classList.add("open")};
+$("close-cart").onclick=function(){$("cart").classList.remove("open")};
+
+(function(){
+  var calm=window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var cl=function(v){return Math.max(0,Math.min(1,v))};
+  function scene(dId,sId,cId,msg,c){
+    var d=$(dId),s=$(sId),tick=false;
+    $(cId).href="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg);
+    function upd(){
+      tick=false;
+      var vh=window.innerHeight,top=d.getBoundingClientRect().top+window.scrollY,st=Math.max(0,top-vh),en=top,p=calm?1:(en>st?cl((window.scrollY-st)/(en-st)):1);
+      var z=cl(p/.9),e=z*z*(3-2*z);
+      var q=cl(p/.7),ey=q*q*(3-2*q);
+      s.style.setProperty("--s",(c.s0+c.ds*e).toFixed(3));
+      var ph=s.querySelector(".phone"),hl=s.querySelector(".headline"),sp=s.querySelector(".specs"),sh=s.clientHeight||1,nd=hl.scrollHeight||1,ih=ph.offsetHeight*(c.s0+c.ds)/2,ctr;
+      if(c.mid){ctr=((hl.offsetTop+nd)+sp.offsetTop)/2}else{ctr=hl.offsetTop+nd*1.35+ih}
+      var ye=ctr/sh*100-50;
+      s.style.setProperty("--y",(-21+(ye+21)*ey).toFixed(2));
+      s.style.setProperty("--f",cl(p/.9).toFixed(3));
+      s.style.setProperty("--m",cl((p-.1)/.6).toFixed(3));
+      s.style.setProperty("--g",(.15+.85*e).toFixed(3));
+      var av=ph.getBoundingClientRect().top-s.getBoundingClientRect().top-hl.offsetTop-2;
+      hl.style.height=Math.max(0,Math.min(nd,av)).toFixed(1)+"px";
+      s.style.setProperty("--t",cl(av/nd).toFixed(3));
+      s.style.setProperty("--k1",cl((p-.15)/.35).toFixed(3));
+      s.style.setProperty("--k2",cl((p-.3)/.35).toFixed(3));
+      s.style.setProperty("--k3",cl((p-.45)/.35).toFixed(3));
+    }
+    window.addEventListener("scroll",function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});
+    window.addEventListener("resize",upd);upd();
+  }
+  scene("drop","stage","drop-cta","Olá! Tenho interesse no iPhone 18 Pro Max.",{s0:.95,ds:.562});
+  scene("drop2","stage2","drop-cta2","Olá! Tenho interesse no MacBook 12 polegadas (2017).",{s0:.9,ds:.3,mid:true});
+  scene("drop3","stage3","drop-cta3","Olá! Tenho interesse no Apple Watch Série 5 (40 mm, GPS).",{s0:.9,ds:.3,mid:true});
+})();
+(function(){
+  /* Avaliações de EXEMPLO: troque pelos depoimentos reais dos seus clientes e coloque SHOW_EXEMPLO=false */
+  var SHOW_EXEMPLO=true;
+  function av(b1,b2,sk,hr,st,sh){
+    var back=st==1?'<path d="M18 31c0-12 6-19 14-19s14 7 14 19v15h-7V31H25v15h-7z" fill="'+hr+'"/>':'';
+    var top=st==0?'<path d="M20 27c0-9 5-14 12-14s12 5 12 14c-3-5-8-7-12-7s-9 2-12 7z" fill="'+hr+'"/>':
+      st==1?'<path d="M20 28c1-10 6-15 12-15s11 5 12 15c-4-4-8-6-12-6s-8 2-12 6z" fill="'+hr+'"/>':
+      st==2?'<circle cx="32" cy="11" r="5" fill="'+hr+'"/><path d="M20 27c0-9 5-14 12-14s12 5 12 14c-3-5-8-7-12-7s-9 2-12 7z" fill="'+hr+'"/>':
+      st==3?'<path d="M19 25c0-8 6-12 13-12s13 4 13 12z" fill="'+hr+'"/><rect x="30" y="22" width="22" height="4" rx="2" fill="'+hr+'"/>':
+      '<circle cx="23" cy="20" r="6" fill="'+hr+'"/><circle cx="32" cy="16" r="7" fill="'+hr+'"/><circle cx="41" cy="20" r="6" fill="'+hr+'"/>';
+    var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+b1+'"/><stop offset="1" stop-color="'+b2+'"/></linearGradient></defs><rect width="64" height="64" fill="url(#g)"/>'+back+'<ellipse cx="32" cy="66" rx="23" ry="18" fill="'+sh+'"/><rect x="28" y="38" width="8" height="10" fill="'+sk+'"/><circle cx="32" cy="29" r="12" fill="'+sk+'"/>'+top+'<circle cx="27.5" cy="30" r="1.3" fill="#1a1a1a"/><circle cx="36.5" cy="30" r="1.3" fill="#1a1a1a"/><path d="M28 35c2 2 6 2 8 0" stroke="#1a1a1a" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>';
+    return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s);
+  }
+  var FB=[
+    {n:"Carlos M.",t:"Atendimento rápido e aparelho exatamente como descrito. Recomendo muito!",a:av("#0F4C3A","#00E5FF","#C68642","#2B1B12",0,"#2B4C7A")},
+    {n:"Juliana S.",t:"Tudo muito tranquilo da compra à entrega. Loja de confiança, voltarei com certeza.",a:av("#7B5CFF","#FF3D6E","#F1C27D","#5A3A1E",1,"#1F2A33")},
+    {n:"Rafael P.",t:"Preço justo e sem enrolação. Nota 10 para a Start Cell!",a:av("#2B4C7A","#00E5FF","#8D5524","#222222",3,"#6B2B7A")},
+    {n:"Camila O.",t:"Fui muito bem atendida pelo WhatsApp, tiraram todas as minhas dúvidas.",a:av("#FF3D6E","#F2C230","#E0AC69","#3B2314",2,"#0F4C3A")},
+    {n:"Bruno A.",t:"Já comprei mais de uma vez. Qualidade e honestidade em todo o atendimento.",a:av("#00E5FF","#7B5CFF","#FFDBAC","#8A5A00",4,"#222222")}
+  ];
+  var L=$("fb-list");
+  FB.forEach(function(f){
+    var d=document.createElement("article");d.className="fb";
+    d.innerHTML=(SHOW_EXEMPLO?'<span class="ex">EXEMPLO</span>':'')+'<img alt="" width="56" height="56"><div><b></b><div class="stars" aria-label="5 de 5 estrelas">★★★★★</div><p></p></div>';
+    d.querySelector("img").src=f.a;d.querySelector("b").textContent=f.n;d.querySelector("p").textContent=f.t;
+    L.appendChild(d);
+  });
+  var CATS={
+    iphones:{t:"iPhones",items:["iphone18"]},
+    macbooks:{t:"MacBooks",items:["macbook"]},
+    watches:{t:"Smartwatches",items:["watch"]}
+  };
+  var P={
+    iphone18:{cat:"iphones",stage:"stage",name:"iPhone 18 Pro Max",price:"Consulte o preço",ask:true,
+      desc:"O iPhone 18 Pro Max é o topo de linha da Apple, com tela OLED de 6,9″, chip A20 Pro e sistema de câmeras Pro Fusion com três câmeras de 48 MP. Reúne desempenho, tela com ProMotion e câmeras versáteis para fotos e vídeos em alta qualidade.",
+      secs:[
+        {t:"Tamanho",rows:[["Tela","6,9″ OLED, 1320 × 2868 pixels"],["Altura","163,4 mm"],["Largura","78 mm"],["Espessura","8,75 mm"],["Peso","249 g"]]},
+        {t:"Armazenamento",chips:["256 GB","512 GB","1 TB","2 TB"],note:"Memória RAM de 12 GB. Consulte a disponibilidade de cada capacidade."},
+        {t:"Câmera",rows:[["Sistema traseiro","Pro Fusion, 3 câmeras de 48 MP"],["Principal","48 MP, 24 mm, abertura variável f/1.5–4.0"],["Ultra-angular","48 MP, 13 mm, f/2.2"],["Teleobjetiva","48 MP, zoom óptico de 4×"],["Profundidade","Scanner LiDAR"],["Frontal","18 MP com Center Stage, f/1.9"],["Vídeo frontal","4K até 60 fps"]]},
+        {t:"Desempenho",rows:[["Chip","Apple A20 Pro"],["CPU / GPU","6 núcleos / 7 núcleos"],["Memória RAM","12 GB"],["Sistema","iOS 27"]]},
+        {t:"Outras informações",rows:[["Cores","Preto, Prata, Glacier e Burgundy"],["Resistência","À água e poeira (IP68)"],["Conexões","USB-C, Bluetooth 6.0 e 5G"]]}
+      ]},
+    macbook:{cat:"macbooks",stage:"stage2",name:"MacBook 12″ (2017)",price:"R$ 2.100",
+      desc:"MacBook Retina de 12 polegadas (2017) com processador Intel Core m3 de 1,2 GHz. Ultrafino, leve (0,92 kg) e sem ventoinha, é um notebook silencioso e portátil para estudos, trabalho e uso no dia a dia.",
+      secs:[
+        {t:"Tamanho",rows:[["Tela","12″ Retina (IPS), 2304 × 1440, 226 ppi"],["Altura","0,35 a 1,31 cm"],["Largura","28,05 cm"],["Profundidade","19,65 cm"],["Peso","0,92 kg"]]},
+        {t:"Armazenamento",chips:["256 GB SSD · Core m3","512 GB SSD · Core i5"],note:"Configurações originais deste modelo. Memória de 8 GB (configurável até 16 GB). Confirme a versão disponível pelo WhatsApp."},
+        {t:"Câmera e áudio",rows:[["Câmera frontal","FaceTime de 480p"],["Microfones","Dois microfones internos"],["Alto-falantes","Estéreo"]]},
+        {t:"Desempenho",rows:[["Processador","Intel Core m3 dual-core, 1,2 GHz (Turbo Boost até 3,0 GHz)"],["Gráficos","Intel HD Graphics 615"],["Memória","8 GB LPDDR3, 1866 MHz"],["Bateria","41,4 Wh"]]},
+        {t:"Outras informações",rows:[["Cores do modelo","Ouro rosa, Cinza-espacial, Dourado e Prata"],["Portas","1 USB-C e entrada de fones de 3,5 mm"],["Conexões","Wi-Fi 802.11ac e Bluetooth 4.2"],["Refrigeração","Sem ventoinha (silencioso)"]]}
+      ]},
+    watch:{cat:"watches",stage:"stage3",name:"Apple Watch Série 5 · 40 mm GPS",price:"R$ 800",
+      desc:"Apple Watch Série 5 de 40 mm com GPS e caixa de alumínio dourado. A tela Always-On Retina mostra as horas sem precisar levantar o pulso, e o relógio traz bússola, sensor de frequência cardíaca, acompanhamento de atividades e resistência à água de até 50 metros.",
+      secs:[
+        {t:"Tamanho",rows:[["Caixa","40 mm, alumínio"],["Dimensões","40 × 34 × 10,7 mm"],["Peso","30,8 g"],["Tela","Retina LTPO OLED Always-On, 324 × 394 pixels, até 1.000 nits"]]},
+        {t:"Armazenamento",chips:["32 GB"],note:"Capacidade de armazenamento do Apple Watch Série 5."},
+        {t:"Câmera e sensores",rows:[["Câmera","Este modelo não possui câmera"],["Saúde","Sensores elétrico e óptico de frequência cardíaca"],["Movimento","Bússola, altímetro, acelerômetro e giroscópio"]]},
+        {t:"Desempenho",rows:[["Chip","Apple S5, 64 bits, dual-core"],["Chip sem fio","W3"],["Bateria","Até 18 horas"]]},
+        {t:"Outras informações",rows:[["Conectividade","GPS (sem celular)"],["Resistência","À água até 50 metros"],["Cores do alumínio","Prata, Cinza-espacial e Dourado"]]}
+      ]}
+  };
+  function imgSrc(id){var i=$(P[id].stage).querySelector(".phone");return i?i.src:""}
+  function el(tag,cls,txt){var x=document.createElement(tag);if(cls)x.className=cls;if(txt!=null)x.textContent=txt;return x}
+  var pv={cats:$("pv-cats"),list:$("pv-list"),detail:$("pv-detail")};
+  function view(v){
+    Object.keys(pv).forEach(function(k){pv[k].hidden=(k!==v)});
+    var r=$("p-produtos").getBoundingClientRect().top+window.scrollY-70;
+    window.scrollTo(0,Math.max(0,r));
+  }
+  function card(img,name,sub,fn){
+    var b=el("button","cat");b.type="button";
+    var i=el("img");i.alt="";i.src=img;
+    var w=el("div");w.appendChild(el("span","nm",name));w.appendChild(el("span","sub",sub));
+    b.appendChild(i);b.appendChild(w);b.appendChild(el("span","go","›"));
+    b.onclick=fn;return b;
+  }
+  function renderCats(){
+    var c=$("cats");c.innerHTML="";
+    Object.keys(CATS).forEach(function(k){
+      var n=CATS[k].items.length;
+      c.appendChild(card(imgSrc(CATS[k].items[0]),CATS[k].t,n+(n>1?" produtos":" produto"),function(){openList(k)}));
+    });
+  }
+  function openList(k){
+    $("list-title").textContent=CATS[k].t;
+    var l=$("plist");l.innerHTML="";
+    CATS[k].items.forEach(function(id){
+      l.appendChild(card(imgSrc(id),P[id].name,P[id].price,function(){openDetail(id)}));
+    });
+    view("list");
+  }
+  function openDetail(id){
+    var d=P[id],box=pv.detail;box.innerHTML="";
+    var back=el("button","back","← "+CATS[d.cat].t.toUpperCase());back.type="button";back.onclick=function(){openList(d.cat)};
+    box.appendChild(back);
+    var hero=el("div","pd-hero");
+    var im=el("img");im.alt=d.name;im.src=imgSrc(id);hero.appendChild(im);
+    hero.appendChild(el("h2",null,d.name));
+    hero.appendChild(el("div","pd-price"+(d.ask?" ask":""),d.price));
+    var a=el("a","pd-cta","CONSULTAR PELO WHATSAPP");a.target="_blank";a.rel="noopener";
+    a.href="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent("Olá! Tenho interesse no "+d.name+".");
+    hero.appendChild(a);box.appendChild(hero);
+    var s=el("div","pd-sec");s.appendChild(el("h3",null,"Descrição"));s.appendChild(el("p","pd-desc",d.desc));box.appendChild(s);
+    d.secs.forEach(function(sec){
+      var x=el("div","pd-sec");x.appendChild(el("h3",null,sec.t));
+      if(sec.rows){var r=el("div","rows");sec.rows.forEach(function(p){var row=el("div");row.appendChild(el("span",null,p[0]));row.appendChild(el("span",null,p[1]));r.appendChild(row)});x.appendChild(r)}
+      if(sec.chips){var cs=el("div","chipset");sec.chips.forEach(function(c){cs.appendChild(el("span",null,c))});x.appendChild(cs)}
+      if(sec.note)x.appendChild(el("p","note",sec.note));
+      box.appendChild(x);
+    });
+    view("detail");
+  }
+  $("back-cats").onclick=function(){view("cats")};
+  var tabs=document.querySelectorAll(".tab"),map={home:"p-home",sobre:"p-sobre",produtos:"p-produtos",redes:"p-redes",feedbacks:"p-feedbacks",promos:"p-promos"};
+  function show(k){
+    tabs.forEach(function(t){t.setAttribute("aria-selected",t.dataset.t===k?"true":"false")});
+    Object.keys(map).forEach(function(x){$(map[x]).hidden=(x!==k)});
+    if(k==="produtos"){renderCats();Object.keys(pv).forEach(function(q){pv[q].hidden=(q!=="cats")})}
+    window.dispatchEvent(new Event("resize"));
+  }
+  tabs.forEach(function(t){t.onclick=function(){show(t.dataset.t)}});
+  show("home");
+})();
+renderFilters();renderGrid();renderCart();
+</script>
+</body>
+</html>
